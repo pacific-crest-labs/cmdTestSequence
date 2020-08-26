@@ -42,25 +42,25 @@ def create_test_seq_df(test_order, rename_pps, qson=False):
         df = df.append(tests[test], ignore_index=True)
     
     # get last ccf test so we know when to start adding load_ccf and peak commands
-    last_ccf_idx = df[df['test_name'].str.contains('ccf')].index[-1]
-    prev_ccf_pps = None
-    prev_peak = False
-    for idx, row in df.loc[last_ccf_idx+1:].iterrows():
+    # last_ccf_idx = df[df['test_name'].str.contains('ccf')].index[-1]
+    # prev_ccf_pps = None
+    # prev_peak = False
+    # for idx, row in df.loc[last_ccf_idx+1:].iterrows():
         # apply load_ccf commands
-        if row['ccf_pps'] != prev_ccf_pps and pd.notna(row['ccf_pps']):
-            if pd.isna(row['special_commands']):
-                df.loc[idx, 'special_commands'] = f"load_ccf:{row['ccf_pps']}"
-            else:
-                df.loc[idx, 'special_commands'] = f"load_ccf:{row['ccf_pps']}," + df.loc[idx, 'special_commands']
-            prev_ccf_pps = row['ccf_pps']
+        # if row['ccf_pps'] != prev_ccf_pps and pd.notna(row['ccf_pps']):
+        #     if pd.isna(row['special_commands']):
+        #         df.loc[idx, 'special_commands'] = f"load_ccf:{row['ccf_pps']}"
+        #     else:
+        #         df.loc[idx, 'special_commands'] = f"load_ccf:{row['ccf_pps']}," + df.loc[idx, 'special_commands']
+        #     prev_ccf_pps = row['ccf_pps']
         # apply correct peak commands if any
-        peak = pd.notna(row['special_commands']) and 'peak_test:1' in row['special_commands']
-        if prev_peak and not peak:
-            if pd.isna(row['special_commands']):
-                df.loc[idx, 'special_commands'] = 'peak_test:end'
-            else:
-                df.loc[idx, 'special_commands'] += ',peak_test:end'
-        prev_peak = peak
+        # peak = pd.notna(row['special_commands']) and 'peak_test:1' in row['special_commands']
+        # if prev_peak and not peak:
+        #     if pd.isna(row['special_commands']):
+        #         df.loc[idx, 'special_commands'] = 'peak_test:end'
+        #     else:
+        #         df.loc[idx, 'special_commands'] += ',peak_test:end'
+        # prev_peak = peak
         
     if qson:
         df['qs'] = df['qs'].replace('off', 'on')

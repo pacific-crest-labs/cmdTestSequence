@@ -1,12 +1,10 @@
 import sys
-import distutils
 from shutil import copyfile, copytree, move
 from cx_Freeze import setup, Executable
 import os
 from zipfile import ZipFile
-# import scipy
 
-sys.path.append(r'.\Report')
+sys.path.append(r'C:\Users\rhohe\PycharmProjects\cmdTestSequence\Report')
 # includefiles_list=[]
 # scipy_path = os.path.dirname(scipy.__file__)
 # includefiles_list.append(scipy_path)
@@ -38,9 +36,9 @@ def zipdir(directory, destination=None):
 
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {
-    "path": sys.path + ['TestSequence'],
+    "path": sys.path + [r'C:\Users\rhohe\PycharmProjects\cmdTestSequence\TestSequence'],
     "includes": ['pandas', 'docopt','matplotlib', 'matplotlib.backends.backend_tkagg', 'seaborn', 'scipy.ndimage._ni_support',
-                 'seaborn.cm', 'scipy', 'scipy.spatial.ckdtree', 'scipy.sparse.csgraph._validation', 'TestSequence/sequence',
+                 'seaborn.cm', 'scipy', 'scipy.spatial.ckdtree', 'scipy.sparse.csgraph._validation', 'sequence',
                  'multiprocessing.pool', 'sklearn.preprocessing'],
 }
 
@@ -54,22 +52,22 @@ setup(  name = "TV Test Report",
         version = "0.1",
         description = 'Creates pdf report from test results',
         options = {"build_exe": build_exe_options},
-        executables = [Executable(r"Report\report.py", base=base),
-                       Executable(r"TestSequence\main_sequence.py", base=base),
-                       Executable(r"TestSequence\manual_sequence.py", base=base),
-                       Executable(r"TestSequence\pcl_sequence.py", base=base),
-                       Executable(r"TestSequence\repair_sequence.py", base=base),
-                       Executable(r"CCF\ccf.py", base=base),
+        executables = [Executable(r"..\..\Report\report.py", base=base),
+                       Executable(r"..\..\TestSequence\tv_test_sequence.py", base=base),
+                       Executable(r"..\..\TestSequence\manual_sequence.py", base=base),
+                       Executable(r"..\..\TestSequence\pcl_sequence.py", base=base),
+                       Executable(r"..\..\TestSequence\repair_sequence.py", base=base),
+                       Executable(r"..\..\CCF\ccf.py", base=base),
                        ]
         )
 # distutils.dir_util.copy_tree('build/exe.win-amd64-3.6', 'exe.win-amd64-3.6')
-copyfile(r'TestSequence\test-details.csv', r'build\exe.win-amd64-3.6\test-details.csv')
-copyfile(r'TestSequence\entry-forms.xlsx', r'build\exe.win-amd64-3.6\entry-forms.xlsx')
-copyfile(r'Report\coeffs.csv', r'build\exe.win-amd64-3.6\coeffs.csv')
-copyfile(r'Report\intro-text.csv', r'build\exe.win-amd64-3.6\intro-text.csv')
-copyfile(r'CCF\ccf-input-template.csv', r'build\exe.win-amd64-3.6\ccf-input-template.csv')
-copyfile(r'CCF\rgb_distribution_sdr.csv', r'build\exe.win-amd64-3.6\rgb_distribution_sdr.csv')
-copyfile(r'CCF\rgb_distribution_hdr.csv', r'build\exe.win-amd64-3.6\rgb_distribution_hdr.csv')
+copyfile(r'..\..\TestSequence\test-details.csv', r'build\exe.win-amd64-3.6\test-details.csv')
+copyfile(r'..\..\TestSequence\entry-forms.xlsx', r'build\exe.win-amd64-3.6\entry-forms.xlsx')
+copyfile(r'..\..\Report\coeffs.csv', r'build\exe.win-amd64-3.6\coeffs.csv')
+copyfile(r'..\..\Report\intro-text.csv', r'build\exe.win-amd64-3.6\intro-text.csv')
+copyfile(r'..\..\CCF\ccf-input-template.csv', r'build\exe.win-amd64-3.6\ccf-input-template.csv')
+copyfile(r'..\..\CCF\rgb_distribution_sdr.csv', r'build\exe.win-amd64-3.6\rgb_distribution_sdr.csv')
+copyfile(r'..\..\CCF\rgb_distribution_hdr.csv', r'build\exe.win-amd64-3.6\rgb_distribution_hdr.csv')
 
 src, dst = r'C:\Users\rhohe\PycharmProjects\cmdTestSequence\Report\APL', r'build\exe.win-amd64-3.6\APL'
 if not os.path.isdir(dst):
@@ -84,4 +82,4 @@ if os.path.isfile(r'build\exe.win-amd64-3.6\lib\scipy\spatial\cKDTree.cp36-win_a
 if os.path.isfile(r"build\exe.win-amd64-3.6\lib\multiprocessing\Pool.pyc"):
     os.rename(r"build\exe.win-amd64-3.6\lib\multiprocessing\Pool.pyc", r"build\exe.win-amd64-3.6\lib\multiprocessing\pool.pyc")
 
-zipdir(r'build\exe.win-amd64-3.6', 'tv-test-scripts.zip')
+zipdir(r'build\exe.win-amd64-3.6', f'tv-test-scripts.zip')

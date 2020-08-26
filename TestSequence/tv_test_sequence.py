@@ -1,5 +1,5 @@
 """Usage:
-main_sequence.exe  <data_folder> <default_pps> <brightest_pps> [options]
+tv_test_sequence.exe  <data_folder> <default_pps> <brightest_pps> [options]
 
 Arguments:
   data_folder       data folder
@@ -15,17 +15,15 @@ Options:
   --qs=secs     tv has quickstart off by default, number of seconds to wake
 """
 import sys
-from docopt import docopt
-from pathlib import Path
 import sequence as ts
 import command_sequence as cs
 sys.path.append('..')
 import logfuncs as lf
 
 
-def get_test_order(docopt_args, ccf_pps_list):
+def get_test_order(docopt_args):
     """Determine test order from option arguments."""
-    test_order = ts.setup_tests(ccf_pps_list)
+    test_order = ['screen_config', 'lum_profile', 'stabilization']
     abc_def_tests = {
         True: ['default', 'default_100', 'default_35', 'default_12', 'default_3'],
         False: ['default', 'default_low_backlight']
@@ -56,12 +54,9 @@ def get_test_order(docopt_args, ccf_pps_list):
 
 
 def main():
-    logger, docopt_args, data_folder = lf.start_script(__doc__, 'main-sequence.log')
+    logger, docopt_args, data_folder = lf.start_script(__doc__, 'tv-test-sequence.log')
     
-    ccf_pps_list = ['default', 'brightest']
-    if docopt_args['--hdr']:
-        ccf_pps_list += ['hdr10_default']
-    test_order = get_test_order(docopt_args, ccf_pps_list)
+    test_order = get_test_order(docopt_args)
     logger.info(test_order)
     
     rename_pps = {
