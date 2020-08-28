@@ -42,14 +42,6 @@ def get_test_order(docopt_args):
             False: ['hdr10', 'hdr10_low_backlight']
         }
         test_order += abc_hdr_tests[bool(docopt_args['--hdrabc'])]
-    test_order += [
-        'standby',
-        'waketime',
-        'standby_echo',
-        'echo_waketime',
-        'standby_google',
-        'google_waketime',
-    ]
     return test_order
 
 
