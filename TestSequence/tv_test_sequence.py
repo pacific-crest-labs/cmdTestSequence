@@ -23,7 +23,14 @@ import logfuncs as lf
 
 def get_test_order(docopt_args):
     """Determine test order from option arguments."""
-    test_order = ['screen_config', 'lum_profile', 'stabilization']
+    test_order = ['screen_config', 'manual_ccf_default', 'manual_ccf_brightest']
+    if docopt_args['--hdr']:
+        test_order += ['manual_ccf_hdr']
+                  
+    test_order += ['lum_profile', 'stabilization']
+    
+    
+    
     abc_def_tests = {
         True: ['default', 'default_100', 'default_35', 'default_12', 'default_3'],
         False: ['default', 'default_low_backlight']
