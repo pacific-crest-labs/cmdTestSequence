@@ -31,7 +31,7 @@ def get_test_specs_df(merged_df, data_folder):
     return test_specs_df
 
 @permission_popup
-def get_results_summary_df(merged_df, data_folder, waketimes):
+def get_results_summary_df(merged_df, data_folder):
     """Create a dataframe with one line per test showing test info and test results (average watts and nits)."""
     rsdf = merged_df.groupby(['tag']).first()
 
@@ -40,7 +40,6 @@ def get_results_summary_df(merged_df, data_folder, waketimes):
     rsdf = rsdf[cols]
     avg_cols = ['watts', 'nits', "APL'"]
     rsdf = pd.concat([rsdf, merged_df.groupby(['tag']).mean()[avg_cols]], axis=1)
-    rsdf['waketime'] = rsdf['test_name'].apply(waketimes.get)
 
     for i, row in rsdf.reset_index().iterrows():
         if 'standby' in row['test_name']:
@@ -130,8 +129,6 @@ def get_standby_df(rsdf):
     return standby_df
 
 
-
-
 def get_persistence_dfs(paths):
     df = pd.read_excel(paths['entry_forms'], sheet_name='Persistence Summary')
     persistence_dfs = {}
@@ -173,8 +170,6 @@ def get_limit_funcs(report_type):
     limit_funcs = {func_name: partial(power_limit, **coeff_vals) for func_name, coeff_vals in coeffs.items()}
     return limit_funcs
 
-
-
     
 @permission_popup
 def get_merged_df(paths, data_folder):
@@ -185,6 +180,19 @@ def get_merged_df(paths, data_folder):
     return merged_df
 
 
+def get_ccf_df(merged_df, data_folder):
+    ccf_df = pd.DataFrame(columns=['test_name', 'grey1', 'grey2', 'grey3', 'grey4', 'grey5'])
+    manual_ccf_tests = [test_name for test_name in merged_df.test_name.unique() if 'manual_ccf' in test_name]
+    for test_name in manual_ccf_tests:
+        tdf = merged_df.query('test_name==@test_name').copy()
+        row = {f'grey{i+1}': tdf['nits'].iloc[i*35+14:i*35+19].mean() for i in range(len(tdf)//35)}
+        row['test_name'] = test_name
+        ccf_df = ccf_df.append(row, ignore_index=True)
+        
+    path = Path(data_folder).joinpath('ccf-summary.csv')
+    ccf_df.to_csv(path, index=False)
+    
+    
 def get_report_data(paths, data_folder, docopt_args):
     data = {}
     data['data_folder'] = data_folder
