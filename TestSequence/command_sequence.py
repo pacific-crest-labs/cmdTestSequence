@@ -167,15 +167,16 @@ def create_command_df(test_seq_df):
         else:
             command_rows.append(('user_command', user_message(i, test_seq_df)))
 
-        if not pd.isnull(row['test_time']):
-            command_rows.append(('wait', row['test_time']))
 
         if not pd.isnull(row['special_commands']):
             for special_command in row['special_commands'].split(','):
 
                 command_type, command = special_command.split(':')
                 command_rows.append((command_type, command.strip()))
-
+                
+        if not pd.isnull(row['test_time']):
+            command_rows.append(('wait', row['test_time']))
+            
     command_df = pd.DataFrame(data=command_rows)
     command_df.columns = ['command_type', 'command', 'stab_wait', 'max_stab'][:command_df.shape[1]]
     return command_df
