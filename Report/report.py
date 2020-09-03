@@ -18,7 +18,7 @@ from reportlab.lib.units import inch
 import reportlab_sections as rls
 import plots
 import report_data as rd
-sys.path.append('..')
+sys.path.append(str(Path(sys.path[0]).parent))
 import logfuncs as lf
 import filefuncs as ff
 

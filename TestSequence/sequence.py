@@ -3,7 +3,7 @@ import sys
 import shutil
 import pandas as pd
 from pathlib import Path
-sys.path.append('..')
+sys.path.append(str(Path(sys.path[0]).parent))
 from filefuncs import archive
 from error_popups import permission_popup
 

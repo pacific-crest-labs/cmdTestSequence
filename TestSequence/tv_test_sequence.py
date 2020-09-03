@@ -17,7 +17,8 @@ Options:
 import sys
 import sequence as ts
 import command_sequence as cs
-sys.path.append('..')
+from pathlib import Path
+sys.path.append(str(Path(sys.path[0]).parent))
 import logfuncs as lf
 
 
