@@ -185,7 +185,7 @@ def get_ccf_df(merged_df, data_folder):
     manual_ccf_tests = [test_name for test_name in merged_df.test_name.unique() if 'manual_ccf' in test_name]
     for test_name in manual_ccf_tests:
         tdf = merged_df.query('test_name==@test_name').copy()
-        row = {f'grey{i+1}': tdf['nits'].iloc[i*35+14:i*35+19].mean() for i in range(len(tdf)//35)}
+        row = {f'grey{i+1}': tdf['nits'].iloc[i*35+19:i*35+24].mean() for i in range(len(tdf)//35)}
         row['test_name'] = test_name
         ccf_df = ccf_df.append(row, ignore_index=True)
         
