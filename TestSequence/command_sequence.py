@@ -163,7 +163,7 @@ def create_command_df(test_seq_df):
         elif 'standby' in row['test_name']:
             command_rows.append(('user_command', standby_message(row)))
         elif 'stabilization' in row['test_name']:
-            command_rows.append(('user_stabilization', stabilization_message(row), 600, 6))
+            command_rows.append(('user_stabilization', stabilization_message(row), 300, 6))
         else:
             command_rows.append(('user_command', user_message(i, test_seq_df)))
 
